@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb';
 let client;
 let db;
 
-const MONGO_URI = 'mongodb+srv://maraheem812:zG4tqJlp8dNbhxUo@cluster0.5nfthfm.mongodb.net/Rank?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI
 
 export async function connectToMongoDB() {
   try {

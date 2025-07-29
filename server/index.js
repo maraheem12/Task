@@ -5,6 +5,15 @@ import { connectToMongoDB, closeConnection } from './mongodb.js';
 import { initializeStorage } from './storage.js';
 import { setupRoutes } from './routes.js';
 
+// const __dirname = path.resolve();
+// if (process.env.NODE_ENV === "production") {
+// 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+// 	});
+// }
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -32,7 +41,7 @@ async function startServer() {
       res.sendFile(path.join(__dirname, '../dist/public/index.html'));
     });
 
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, '127.0.0.1', () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📱 Frontend: http://localhost:${PORT}`);
       console.log(`🔗 API: http://localhost:${PORT}/api`);
@@ -50,7 +59,7 @@ async function startServer() {
       res.sendFile(path.join(__dirname, '../dist/public/index.html'));
     });
 
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, '127.0.0.1', () => {
       console.log(`🚀 Server running on port ${PORT} (in-memory mode)`);
       console.log(`📱 Frontend: http://localhost:${PORT}`);
       console.log(`🔗 API: http://localhost:${PORT}/api`);
