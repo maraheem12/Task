@@ -58,6 +58,7 @@ export async function registerRoutes(app) {
       // Create points history entry
       await storage.createPointsHistory({
         userId,
+        userName: user.name,
         pointsAwarded,
       });
 
@@ -78,19 +79,7 @@ export async function registerRoutes(app) {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       const history = await storage.getPointsHistory(limit);
-      
-      // Enrich with user names
-      const enrichedHistory = await Promise.all(
-        history.map(async (entry) => {
-          const user = await storage.getUser(entry.userId);
-          return {
-            ...entry,
-            userName: user?.name || "Unknown User"
-          };
-        })
-      );
-
-      res.json(enrichedHistory);
+      res.json(history);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch history" });
     }
@@ -99,14 +88,8 @@ export async function registerRoutes(app) {
   // Get user statistics
   app.get("/api/stats", async (req, res) => {
     try {
-      const users = await storage.getAllUsers();
-      const history = await storage.getPointsHistory();
-      
-      res.json({
-        totalUsers: users.length,
-        totalClaims: history.length,
-        totalPoints: users.reduce((sum, user) => sum + user.totalPoints, 0),
-      });
+      const stats = await storage.getStats();
+      res.json(stats);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch statistics" });
     }
