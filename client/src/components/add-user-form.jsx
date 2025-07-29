@@ -12,7 +12,7 @@ export default function AddUserForm() {
   const { toast } = useToast();
 
   const addUserMutation = useMutation({
-    mutationFn: async (name: string) => {
+    mutationFn: async (name) => {
       const response = await apiRequest("POST", "/api/users", { name });
       return response.json();
     },
@@ -27,7 +27,7 @@ export default function AddUserForm() {
       queryClient.invalidateQueries({ queryKey: ["/api/users"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast({
         title: "Error",
         description: error.message || "Failed to add user. Please try again.",
@@ -48,7 +48,7 @@ export default function AddUserForm() {
     addUserMutation.mutate(newUserName.trim());
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleAddUser();
     }

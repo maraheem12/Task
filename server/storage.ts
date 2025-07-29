@@ -1,34 +1,13 @@
-import { type User, type InsertUser, type PointsHistory, type InsertPointsHistory } from "@shared/schema";
 import { randomUUID } from "crypto";
 
-export interface IStorage {
-  // User operations
-  getUser(id: string): Promise<User | undefined>;
-  getUserByName(name: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  getAllUsers(): Promise<User[]>;
-  updateUser(id: string, updates: Partial<User>): Promise<User | undefined>;
-  
-  // Points history operations
-  createPointsHistory(history: InsertPointsHistory): Promise<PointsHistory>;
-  getPointsHistory(limit?: number): Promise<PointsHistory[]>;
-  getUserPointsHistory(userId: string): Promise<PointsHistory[]>;
-  
-  // Leaderboard operations
-  updateRankings(): Promise<void>;
-}
-
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private pointsHistory: Map<string, PointsHistory>;
-
+export class MemStorage {
   constructor() {
     this.users = new Map();
     this.pointsHistory = new Map();
     this.initializeDefaultUsers();
   }
 
-  private async initializeDefaultUsers() {
+  async initializeDefaultUsers() {
     const defaultUsers = [
       { name: "Rahul" },
       { name: "Kamal" },
@@ -47,19 +26,19 @@ export class MemStorage implements IStorage {
     }
   }
 
-  async getUser(id: string): Promise<User | undefined> {
+  async getUser(id) {
     return this.users.get(id);
   }
 
-  async getUserByName(name: string): Promise<User | undefined> {
+  async getUserByName(name) {
     return Array.from(this.users.values()).find(
       (user) => user.name.toLowerCase() === name.toLowerCase(),
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async createUser(insertUser) {
     const id = randomUUID();
-    const user: User = { 
+    const user = { 
       ...insertUser, 
       id, 
       totalPoints: 0, 
@@ -71,11 +50,11 @@ export class MemStorage implements IStorage {
     return user;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers() {
     return Array.from(this.users.values()).sort((a, b) => a.rank - b.rank);
   }
 
-  async updateUser(id: string, updates: Partial<User>): Promise<User | undefined> {
+  async updateUser(id, updates) {
     const user = this.users.get(id);
     if (!user) return undefined;
     
@@ -84,9 +63,9 @@ export class MemStorage implements IStorage {
     return updatedUser;
   }
 
-  async createPointsHistory(insertHistory: InsertPointsHistory): Promise<PointsHistory> {
+  async createPointsHistory(insertHistory) {
     const id = randomUUID();
-    const history: PointsHistory = {
+    const history = {
       ...insertHistory,
       id,
       claimedAt: new Date(),
@@ -95,19 +74,19 @@ export class MemStorage implements IStorage {
     return history;
   }
 
-  async getPointsHistory(limit: number = 50): Promise<PointsHistory[]> {
+  async getPointsHistory(limit = 50) {
     return Array.from(this.pointsHistory.values())
       .sort((a, b) => b.claimedAt.getTime() - a.claimedAt.getTime())
       .slice(0, limit);
   }
 
-  async getUserPointsHistory(userId: string): Promise<PointsHistory[]> {
+  async getUserPointsHistory(userId) {
     return Array.from(this.pointsHistory.values())
       .filter(history => history.userId === userId)
       .sort((a, b) => b.claimedAt.getTime() - a.claimedAt.getTime());
   }
 
-  async updateRankings(): Promise<void> {
+  async updateRankings() {
     const users = Array.from(this.users.values());
     const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
     

@@ -2,21 +2,13 @@ import { History, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 
-interface HistoryEntry {
-  id: string;
-  userId: string;
-  userName: string;
-  pointsAwarded: number;
-  claimedAt: Date;
-}
-
 export default function PointsHistory() {
-  const { data: history, isLoading } = useQuery<HistoryEntry[]>({
+  const { data: history, isLoading } = useQuery({
     queryKey: ["/api/history"],
     refetchInterval: 5000, // Auto-refresh every 5 seconds
   });
 
-  const formatTimeAgo = (claimedAt: Date) => {
+  const formatTimeAgo = (claimedAt) => {
     const now = new Date();
     const diff = now.getTime() - new Date(claimedAt).getTime();
     const minutes = Math.floor(diff / (1000 * 60));
@@ -34,11 +26,11 @@ export default function PointsHistory() {
     return `${days} days ago`;
   };
 
-  const getInitials = (name: string) => {
+  const getInitials = (name) => {
     return name.charAt(0).toUpperCase();
   };
 
-  const getAvatarColor = (name: string) => {
+  const getAvatarColor = (name) => {
     const colors = [
       "bg-primary",
       "bg-secondary", 
@@ -55,7 +47,7 @@ export default function PointsHistory() {
     return colors[index];
   };
 
-  const getPointsBadgeColor = (points: number) => {
+  const getPointsBadgeColor = (points) => {
     if (points >= 8) return "bg-secondary/10 text-secondary";
     if (points >= 5) return "bg-accent/10 text-accent";
     return "bg-primary/10 text-primary";

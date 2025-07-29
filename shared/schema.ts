@@ -29,8 +29,3 @@ export const insertPointsHistorySchema = createInsertSchema(pointsHistory).omit(
   id: true,
   claimedAt: true,
 });
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-export type InsertPointsHistory = z.infer<typeof insertPointsHistorySchema>;
-export type PointsHistory = typeof pointsHistory.$inferSelect;

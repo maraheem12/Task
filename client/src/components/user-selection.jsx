@@ -5,19 +5,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import type { User } from "@shared/schema";
 
 export default function UserSelection() {
-  const [selectedUserId, setSelectedUserId] = useState<string>("");
-  const [lastClaimedPoints, setLastClaimedPoints] = useState<number | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [lastClaimedPoints, setLastClaimedPoints] = useState(null);
   const { toast } = useToast();
 
-  const { data: users, isLoading } = useQuery<User[]>({
+  const { data: users, isLoading } = useQuery({
     queryKey: ["/api/users"],
   });
 
   const claimPointsMutation = useMutation({
-    mutationFn: async (userId: string) => {
+    mutationFn: async (userId) => {
       const response = await apiRequest("POST", `/api/users/${userId}/claim`);
       return response.json();
     },

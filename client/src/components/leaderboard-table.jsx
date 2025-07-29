@@ -2,10 +2,9 @@ import { Medal, RefreshCw, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import type { User } from "@shared/schema";
 
 export default function LeaderboardTable() {
-  const { data: users, isLoading, isRefetching } = useQuery<User[]>({
+  const { data: users, isLoading, isRefetching } = useQuery({
     queryKey: ["/api/users"],
     refetchInterval: 5000, // Auto-refresh every 5 seconds
   });
@@ -14,7 +13,7 @@ export default function LeaderboardTable() {
     queryClient.invalidateQueries({ queryKey: ["/api/users"] });
   };
 
-  const formatLastClaim = (lastClaimAt: Date | null) => {
+  const formatLastClaim = (lastClaimAt) => {
     if (!lastClaimAt) return "Never";
     
     const now = new Date();
@@ -26,19 +25,19 @@ export default function LeaderboardTable() {
     return `${minutes} mins ago`;
   };
 
-  const getRankIcon = (rank: number) => {
+  const getRankIcon = (rank) => {
     if (rank === 1) return <Crown className="text-yellow-500 ml-2 h-4 w-4" />;
     return null;
   };
 
-  const getRankBadgeColor = (rank: number) => {
+  const getRankBadgeColor = (rank) => {
     if (rank === 1) return "bg-accent text-white";
     if (rank === 2) return "bg-gray-500 text-white";
     if (rank === 3) return "bg-orange-500 text-white";
     return "bg-gray-400 text-white";
   };
 
-  const getPointsBadgeColor = (rank: number) => {
+  const getPointsBadgeColor = (rank) => {
     if (rank === 1) return "bg-primary/10 text-primary";
     if (rank === 2) return "bg-secondary/10 text-secondary";
     if (rank === 3) return "bg-orange-100 text-orange-600";

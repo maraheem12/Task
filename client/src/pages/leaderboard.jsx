@@ -4,16 +4,9 @@ import AddUserForm from "@/components/add-user-form";
 import LeaderboardTable from "@/components/leaderboard-table";
 import PointsHistory from "@/components/points-history";
 import { useQuery } from "@tanstack/react-query";
-import type { User } from "@shared/schema";
-
-interface Stats {
-  totalUsers: number;
-  totalClaims: number;
-  totalPoints: number;
-}
 
 export default function Leaderboard() {
-  const { data: stats } = useQuery<Stats>({
+  const { data: stats } = useQuery({
     queryKey: ["/api/stats"],
   });
 
