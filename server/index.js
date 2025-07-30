@@ -41,7 +41,7 @@ async function startServer() {
       res.sendFile(path.join(__dirname, '../dist/public/index.html'));
     });
 
-    app.listen(PORT, '127.0.0.1', () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📱 Frontend: http://localhost:${PORT}`);
       console.log(`🔗 API: http://localhost:${PORT}/api`);
@@ -59,7 +59,7 @@ async function startServer() {
       res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
 
-    app.listen(PORT, '127.0.0.1', () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT} (in-memory mode)`);
       console.log(`📱 Frontend: http://localhost:${PORT}`);
       console.log(`🔗 API: http://localhost:${PORT}/api`);
