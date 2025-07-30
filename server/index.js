@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../dist/public')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Initialize MongoDB and storage
 async function startServer() {
@@ -56,7 +56,7 @@ async function startServer() {
     setupRoutes(app);
     
     app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
 
     app.listen(PORT, '127.0.0.1', () => {
