@@ -38,7 +38,7 @@ async function startServer() {
     
     // Serve React app for all other routes
     app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
 
     app.listen(PORT, '0.0.0.0', () => {
